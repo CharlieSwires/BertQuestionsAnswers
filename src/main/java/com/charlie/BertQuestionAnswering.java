@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,8 +35,9 @@ import ai.djl.translate.TranslatorContext;
 @RequestMapping(path = "engine")
 public class BertQuestionAnswering {
 
-	@GetMapping(path = "right")
-	public String right() throws IOException, ModelException, TranslateException {
+	@PostMapping(path = "right", consumes="application/json")
+	public String right(@RequestBody QuestionRequest request) throws IOException, ModelException, TranslateException {
+
 		Translator<Map<String, String>, String> translator = new QaTranslator();
 
 		@SuppressWarnings("unchecked")
@@ -49,10 +52,10 @@ public class BertQuestionAnswering {
 				Predictor<Map<String, String>, String> predictor = model.newPredictor()) {
 
 			Map<String, String> input = new HashMap<>();
-			input.put("question", "What color is the dog?");
-			input.put("context", "The quick ginger fox jumps over the lazy dog.");
+			input.put("question", request.getQuestion());
+			input.put("context", "The quick brown fox jumps over the lazy dog.");
 
-			return "Answer: " + predictor.predict(input);
+			return input.get("context")+"\n"+input.get("question")+"\n"+"Answer: " + predictor.predict(input);
 		}
 	}
 
