@@ -2,7 +2,6 @@ package com.charlie;
 
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ai.djl.Application;
 import ai.djl.ModelException;
 import ai.djl.inference.Predictor;
 import ai.djl.modality.nlp.DefaultVocabulary;
@@ -23,17 +21,13 @@ import ai.djl.modality.nlp.bert.BertToken;
 import ai.djl.ndarray.NDArray;
 import ai.djl.ndarray.NDList;
 import ai.djl.ndarray.NDManager;
-import ai.djl.ndarray.types.DataType;
-import ai.djl.ndarray.types.Shape;
 import ai.djl.repository.zoo.Criteria;
 import ai.djl.repository.zoo.ModelZoo;
 import ai.djl.repository.zoo.ZooModel;
-import ai.djl.training.util.ProgressBar;
 import ai.djl.translate.Batchifier;
 import ai.djl.translate.TranslateException;
 import ai.djl.translate.Translator;
 import ai.djl.translate.TranslatorContext;
-import ai.djl.translate.TranslatorFactory;
 
 @RestController
 @RequestMapping(path = "engine")
@@ -43,6 +37,7 @@ public class BertQuestionAnswering {
 	public String right() throws IOException, ModelException, TranslateException {
 		Translator<Map<String, String>, String> translator = new QaTranslator();
 
+		@SuppressWarnings("unchecked")
 		Criteria<Map<String,String>, String> criteria = Criteria.builder()
 			    .setTypes((Class) Map.class, String.class)
 			    .optEngine("PyTorch")
@@ -54,8 +49,8 @@ public class BertQuestionAnswering {
 				Predictor<Map<String, String>, String> predictor = model.newPredictor()) {
 
 			Map<String, String> input = new HashMap<>();
-			input.put("question", "What color is the fox?");
-			input.put("context", "The quick brown fox jumps over the lazy dog.");
+			input.put("question", "What color is the dog?");
+			input.put("context", "The quick ginger fox jumps over the lazy dog.");
 
 			return "Answer: " + predictor.predict(input);
 		}
