@@ -1,0 +1,28 @@
+# pip install transformers torch --upgrade
+import os, shutil, torch
+from transformers import AutoTokenizer, DistilBertForQuestionAnswering
+
+OUT_DIR = r"C:\Users\Dell\eclipse-workspace\bert\bert-questions-answers\src\main\python"
+os.makedirs(OUT_DIR, exist_ok=True)
+
+MODEL_NAME = "distilbert-base-uncased-distilled-squad"
+
+# Download tokenizer + model to HF cache
+tok = AutoTokenizer.from_pretrained(MODEL_NAME)
+model = DistilBertForQuestionAnswering.from_pretrained(MODEL_NAME).eval()
+
+# Trace the model with the same seq length you're using in Java
+L = 384
+input_ids      = torch.zeros(1, L, dtype=torch.long)
+attention_mask = torch.ones(1, L, dtype=torch.long)
+ts = torch.jit.trace(model, (input_ids, attention_mask))
+ts.save(os.path.join(OUT_DIR, "traced.pt"))
+
+# Put vocab.txt right next to traced.pt
+if tok.vocab_file is None:
+    # (not the case for distilbert, but just in case)
+    tok.save_pretrained(OUT_DIR)  # writes vocab.txt/special_tokens_map.json/etc.
+else:
+    shutil.copy2(tok.vocab_file, os.path.join(OUT_DIR, "vocab.txt"))
+
+print("Done. Files in OUT_DIR:", os.listdir(OUT_DIR))

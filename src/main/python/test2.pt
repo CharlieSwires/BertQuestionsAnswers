@@ -1,0 +1,42 @@
+# prepare_distilbert.py
+import os, shutil, torch
+from transformers import AutoTokenizer, DistilBertForQuestionAnswering
+
+OUT_DIR = r"C:\Users\Dell\eclipse-workspace\bert\BertQuestionsAnswers\pom.xml\src\main\python"
+os.makedirs(OUT_DIR, exist_ok=True)
+
+MODEL_NAME = "distilbert-base-uncased-distilled-squad"
+SEQ_LEN = 384  # must match Java
+
+# 1) Download
+tok = AutoTokenizer.from_pretrained(MODEL_NAME)
+hf_model = DistilBertForQuestionAnswering.from_pretrained(MODEL_NAME).eval()
+
+# 2) Wrap so tracing returns a tuple, not a dict
+class QATraceWrapper(torch.nn.Module):
+    def __init__(self, model):
+        super().__init__()
+        self.model = model
+    def forward(self, input_ids, attention_mask):
+        start, end = self.model(input_ids=input_ids,
+                                attention_mask=attention_mask,
+                                return_dict=False)
+        return start, end
+
+wrapper = QATraceWrapper(hf_model).eval()
+
+# 3) Trace with fixed shapes
+input_ids      = torch.zeros(1, SEQ_LEN, dtype=torch.long)
+attention_mask = torch.ones(1, SEQ_LEN, dtype=torch.long)
+
+ts = torch.jit.trace(wrapper, (input_ids, attention_mask), strict=False)
+traced_path = os.path.join(OUT_DIR, "traced.pt")
+ts.save(traced_path)
+
+# 4) Always save the tokenizer artifacts (Fast tokenizer has no `vocab_file`)
+tok.save_pretrained(OUT_DIR)  # writes vocab.txt, tokenizer.json, etc.
+
+# (Optional) sanity prints
+print("Wrote:", traced_path)
+print("Files now in OUT_DIR:", os.listdir(OUT_DIR))
+print("traced.pt size:", os.path.getsize(traced_path), "bytes")
