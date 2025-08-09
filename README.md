@@ -13,6 +13,7 @@ BERTQuestionAnswering
 <p>cd ../java/com/charlie</p>
 <p>edit BertQuestionAnswering.java alter the path 			    .optModelPath(Paths.get("C:\\Users\\Dell\\eclipse-workspace\\bert\\BertQuestionsAnswers\\src\\main\\python\\traced.pt")) // <-- the .pt file itself</p>
 <p>cd ../../..</p>
+<p>download maven</p>
 <p>mvn clean package</p>
 <p>cd target</p>
 <p>java -jar bert-questions-answers.jar</p>
