@@ -17,7 +17,7 @@ BERTQuestionAnswering
 <p>cd target</p>
 <p>java -jar bert-questions-answers.jar</p>
 <p>download and run post-man set the headers as follows</p>
-<p><image src="https://github.com/CharlieSwires/BertQuestionsAnswers/Screenshot 2025-08-09 044513.png" /></p>
+<p><image src="https://github.com/CharlieSwires/BertQuestionsAnswers/Screenshot2025-08-09044513.png" /></p>
 <p>ask your question as below:</p>
-<p><image src="https://github.com/CharlieSwires/BertQuestionsAnswers/Screenshot 2025-08-09 045237.png" /></p>
+<p><image src="https://github.com/CharlieSwires/BertQuestionsAnswers/Screenshot2025-08-09045237.png" /></p>
 
