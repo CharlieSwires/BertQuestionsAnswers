@@ -2,8 +2,9 @@ BERTQuestionAnswering
 ---------------------
 
 <p>download https://www.openlogic.com/openjdk-downloads OpenJDK17
-<p>https://git-scm.com/downloads git clone https://github.com/CharlieSwires/BertQuestionsAnswers</p>
-<p>Load the https://www.python.org/downloads</p>
+<p>download git https://git-scm.com/downloads</p>
+<p>git clone https://github.com/CharlieSwires/BertQuestionsAnswers</p>
+<p>Load python interpreter https://www.python.org/downloads</p>
 <p>py -m pip install --upgrade pip</p>
 <p>py -m pip install transformers</p>
 <p>py -m pip install torch --index-url https://download.pytorch.org/whl/cpu</p>
