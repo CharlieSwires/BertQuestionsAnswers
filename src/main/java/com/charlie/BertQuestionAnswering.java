@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,7 +43,7 @@ public class BertQuestionAnswering {
 		Criteria<Map<String,String>, String> criteria = Criteria.builder()
 			    .setTypes((Class) Map.class, String.class)
 			    .optEngine("PyTorch")
-			    .optModelPath(Paths.get("C:\\Users\\Dell\\eclipse-workspace\\bert\\BertQuestionsAnswers\\src\\main\\python\\traced.pt")) // <-- the .pt file itself
+			    .optModelPath(Paths.get("C:\\Users\\Dell\\eclipse-workspace\\BertQuestionsAnswers\\src\\main\\python\\traced.pt")) // <-- the .pt file itself
 			    .optTranslator(new QaTranslator())
 			    .build();
 		
