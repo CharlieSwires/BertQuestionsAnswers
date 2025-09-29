@@ -2,7 +2,7 @@
 import os, shutil, torch
 from transformers import AutoTokenizer, DistilBertForQuestionAnswering
 
-OUT_DIR = r"C:\Users\Dell\eclipse-workspace\bert\BertQuestionsAnswers\src\main\python"
+OUT_DIR = r"C:\Users\Dell\eclipse-workspace\BertQuestionsAnswers\src\main\python"
 os.makedirs(OUT_DIR, exist_ok=True)
 
 MODEL_NAME = "distilbert-base-uncased-distilled-squad"
