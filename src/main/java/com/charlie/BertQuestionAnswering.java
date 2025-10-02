@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +34,11 @@ import ai.djl.translate.TranslatorContext;
 @RestController
 @RequestMapping(path = "engine")
 public class BertQuestionAnswering {
+
+	@GetMapping(path = "right")
+	public String getright() {
+		return "Hello";
+	}
 
 	@PostMapping(path = "right", consumes="application/json")
 	public String right(@RequestBody QuestionRequest request) throws IOException, ModelException, TranslateException {
