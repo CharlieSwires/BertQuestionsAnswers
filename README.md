@@ -6,7 +6,7 @@ BERTQuestionAnswering
 <p>git clone https://github.com/CharlieSwires/BertQuestionsAnswers</p>
 <p>Load python 3.12 interpreter https://www.python.org/downloads</p>
 <p>cd BertQuestionsAnswers/src/main/python</p>
-<p>run runthis.sh</p>
+<p>run ./runthis.sh</p>
 <p>edit test2.pt OUT_DIR = r"C:\Users\charl\eclipse-workspace\bert\BertQuestionsAnswers\src\main\python" to be the correct path</p>
 <p>cd ../java/com/charlie</p>
 <p>edit BertQuestionAnswering.java alter the path .optModelPath(Paths.get("C:\\Users\\charl\\eclipse-workspace\\BertQuestionsAnswers\\src\\main\\python\\distilbert_qa_traced.pt"))
