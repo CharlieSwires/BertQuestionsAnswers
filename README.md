@@ -4,15 +4,13 @@ BERTQuestionAnswering
 <p>download https://www.openlogic.com/openjdk-downloads OpenJDK17
 <p>download git https://git-scm.com/downloads</p>
 <p>git clone https://github.com/CharlieSwires/BertQuestionsAnswers</p>
-<p>Load python interpreter https://www.python.org/downloads</p>
-<p>py -m pip install --upgrade pip</p>
-<p>py -m pip install transformers</p>
-<p>py -m pip install torch --index-url https://download.pytorch.org/whl/cpu</p>
+<p>Load python 3.12 interpreter https://www.python.org/downloads</p>
 <p>cd BertQuestionsAnswers/src/main/python</p>
-<p>edit test2.pt OUT_DIR = r"C:\Users\Dell\eclipse-workspace\bert\BertQuestionsAnswers\src\main\python" to be the correct path</p>
-<p>py test2.pt</p>
+<p>run runthis.sh</p>
+<p>edit test2.pt OUT_DIR = r"C:\Users\charl\eclipse-workspace\bert\BertQuestionsAnswers\src\main\python" to be the correct path</p>
 <p>cd ../java/com/charlie</p>
-<p>edit BertQuestionAnswering.java alter the path 			    .optModelPath(Paths.get("C:\\Users\\Dell\\eclipse-workspace\\bert\\BertQuestionsAnswers\\src\\main\\python\\traced.pt")) // <-- the .pt file itself</p>
+<p>edit BertQuestionAnswering.java alter the path .optModelPath(Paths.get("C:\\Users\\charl\\eclipse-workspace\\BertQuestionsAnswers\\src\\main\\python\\distilbert_qa_traced.pt"))
+)) // <-- the .pt file itself</p>
 <p>cd ../../..</p>
 <p>download https://maven.apache.org/download.cgi</p>
 <p>mvn clean package</p>

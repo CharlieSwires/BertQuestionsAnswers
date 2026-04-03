@@ -30,28 +30,30 @@ import ai.djl.translate.Batchifier;
 import ai.djl.translate.TranslateException;
 import ai.djl.translate.Translator;
 import ai.djl.translate.TranslatorContext;
-
+import ai.djl.Device;
 @RestController
-@RequestMapping(path = "engine")
+@RequestMapping(path = "BERT")
 public class BertQuestionAnswering {
 
-	@GetMapping(path = "right")
+	@GetMapping(path ="Question")
 	public String getright() {
 		return "Hello";
 	}
 
-	@PostMapping(path = "right", consumes="application/json")
+	@PostMapping(path = "Question", consumes="application/json")
 	public String right(@RequestBody QuestionRequest request) throws IOException, ModelException, TranslateException {
 
 		Translator<Map<String, String>, String> translator = new QaTranslator();
 
 		@SuppressWarnings("unchecked")
 		Criteria<Map<String,String>, String> criteria = Criteria.builder()
-			    .setTypes((Class) Map.class, String.class)
-			    .optEngine("PyTorch")
-			    .optModelPath(Paths.get("C:\\Users\\Dell\\eclipse-workspace\\BertQuestionsAnswers\\src\\main\\python\\traced.pt")) // <-- the .pt file itself
-			    .optTranslator(new QaTranslator())
-			    .build();
+        .setTypes((Class) Map.class, String.class)
+        .optEngine("PyTorch")
+        .optDevice(Device.cpu())
+        .optModelPath(Paths.get(
+                "C:\\Users\\charl\\eclipse-workspace\\BertQuestionsAnswers\\src\\main\\python\\distilbert_qa_traced.pt"))
+        .optTranslator(new QaTranslator())
+        .build();
 		
 		try (ZooModel<Map<String, String>, String> model = ModelZoo.loadModel(criteria);
 				Predictor<Map<String, String>, String> predictor = model.newPredictor()) {

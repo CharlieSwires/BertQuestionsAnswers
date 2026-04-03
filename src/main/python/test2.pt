@@ -1,42 +1,77 @@
-# prepare_distilbert.py
-import os, shutil, torch
+# test2.pt
+import os
+import sys
+import torch
+import transformers
 from transformers import AutoTokenizer, DistilBertForQuestionAnswering
 
-OUT_DIR = r"C:\Users\Dell\eclipse-workspace\BertQuestionsAnswers\src\main\python"
+MODEL_NAME = "distilbert-base-uncased-distilled-squad"
+SEQ_LEN = 384
+
+OUT_DIR = r"C:\Users\charl\eclipse-workspace\BertQuestionsAnswers\src\main\python"
 os.makedirs(OUT_DIR, exist_ok=True)
 
-MODEL_NAME = "distilbert-base-uncased-distilled-squad"
-SEQ_LEN = 384  # must match Java
+print("Python:", sys.version)
+print("Torch:", torch.__version__)
+print("Transformers:", transformers.__version__)
 
-# 1) Download
-tok = AutoTokenizer.from_pretrained(MODEL_NAME)
-hf_model = DistilBertForQuestionAnswering.from_pretrained(MODEL_NAME).eval()
+# Fail fast on the newer masking stack
+major, minor, *_ = [int(x) for x in transformers.__version__.split(".")[:2]]
+if (major, minor) >= (4, 42):
+    raise RuntimeError(
+        "This script expects transformers <= 4.41.2.\n"
+        f"Found {transformers.__version__}.\n"
+        "Please install:\n"
+        "  py -m pip uninstall -y transformers tokenizers\n"
+        "  py -m pip install transformers==4.41.2 tokenizers==0.19.1"
+    )
 
-# 2) Wrap so tracing returns a tuple, not a dict
-class QATraceWrapper(torch.nn.Module):
-    def __init__(self, model):
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+model = DistilBertForQuestionAnswering.from_pretrained(MODEL_NAME)
+model.eval()
+
+class QAWrapper(torch.nn.Module):
+    def __init__(self, qa_model):
         super().__init__()
-        self.model = model
+        self.qa_model = qa_model
+
     def forward(self, input_ids, attention_mask):
-        start, end = self.model(input_ids=input_ids,
-                                attention_mask=attention_mask,
-                                return_dict=False)
-        return start, end
+        outputs = self.qa_model(
+            input_ids=input_ids,
+            attention_mask=attention_mask,
+            return_dict=False
+        )
+        # DistilBERT QA returns (start_logits, end_logits)
+        start_logits, end_logits = outputs[0], outputs[1]
+        return start_logits, end_logits
 
-wrapper = QATraceWrapper(hf_model).eval()
+wrapper = QAWrapper(model).eval()
 
-# 3) Trace with fixed shapes
-input_ids      = torch.zeros(1, SEQ_LEN, dtype=torch.long)
-attention_mask = torch.ones(1, SEQ_LEN, dtype=torch.long)
+sample = tokenizer(
+    "What is the capital of France?",
+    "France's capital is Paris.",
+    max_length=SEQ_LEN,
+    truncation="only_second",
+    padding="max_length",
+    return_tensors="pt"
+)
 
-ts = torch.jit.trace(wrapper, (input_ids, attention_mask), strict=False)
-traced_path = os.path.join(OUT_DIR, "traced.pt")
-ts.save(traced_path)
+input_ids = sample["input_ids"].long()
+attention_mask = sample["attention_mask"].long()
 
-# 4) Always save the tokenizer artifacts (Fast tokenizer has no `vocab_file`)
-tok.save_pretrained(OUT_DIR)  # writes vocab.txt, tokenizer.json, etc.
+with torch.no_grad():
+    traced = torch.jit.trace(
+        wrapper,
+        (input_ids, attention_mask),
+        strict=False
+    )
 
-# (Optional) sanity prints
-print("Wrote:", traced_path)
-print("Files now in OUT_DIR:", os.listdir(OUT_DIR))
-print("traced.pt size:", os.path.getsize(traced_path), "bytes")
+out_file = os.path.join(OUT_DIR, "distilbert_qa_traced.pt")
+traced.save(out_file)
+tokenizer.save_pretrained(OUT_DIR)
+
+print("Saved TorchScript model to:", out_file)
+print("Saved tokenizer files to:", OUT_DIR)
+print("Files now in directory:")
+for name in os.listdir(OUT_DIR):
+    print(" -", name)
