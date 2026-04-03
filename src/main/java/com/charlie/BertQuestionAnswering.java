@@ -36,7 +36,11 @@ import ai.djl.Device;
 public class BertQuestionAnswering {
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	@GetMapping(path ="Question")
+=======
+	@GetMapping(path = "right")
+>>>>>>> 6b6adbb7572b6de298aeeb43d41fff7768dc27e3
 =======
 	@GetMapping(path = "right")
 >>>>>>> 6b6adbb7572b6de298aeeb43d41fff7768dc27e3
@@ -45,8 +49,11 @@ public class BertQuestionAnswering {
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	@PostMapping(path = "Question", consumes="application/json")
 =======
+=======
+>>>>>>> 6b6adbb7572b6de298aeeb43d41fff7768dc27e3
 	@PostMapping(path = "right", consumes="application/json")
 >>>>>>> 6b6adbb7572b6de298aeeb43d41fff7768dc27e3
 	public String right(@RequestBody QuestionRequest request) throws IOException, ModelException, TranslateException {
