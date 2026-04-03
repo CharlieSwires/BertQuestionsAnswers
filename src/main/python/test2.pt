@@ -5,10 +5,14 @@ import torch
 import transformers
 from transformers import AutoTokenizer, DistilBertForQuestionAnswering
 
+<<<<<<< HEAD
 MODEL_NAME = "distilbert-base-uncased-distilled-squad"
 SEQ_LEN = 384
 
 OUT_DIR = r"C:\Users\charl\eclipse-workspace\BertQuestionsAnswers\src\main\python"
+=======
+OUT_DIR = r"C:\Users\Dell\eclipse-workspace\BertQuestionsAnswers\src\main\python"
+>>>>>>> 6b6adbb7572b6de298aeeb43d41fff7768dc27e3
 os.makedirs(OUT_DIR, exist_ok=True)
 
 print("Python:", sys.version)
