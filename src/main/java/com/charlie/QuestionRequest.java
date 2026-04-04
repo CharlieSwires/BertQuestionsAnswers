@@ -1,26 +1,38 @@
 package com.charlie;
 
-//Bean class to hold the incoming JSON
+// Bean class to hold the incoming JSON
 public class QuestionRequest {
- private String question;
 
- // Default constructor for JSON mapping
- public QuestionRequest() {}
+    private String question;
+    private String context;
 
- public QuestionRequest(String question) {
-     this.question = question;
- }
+    // Default constructor for JSON mapping
+    public QuestionRequest() {
+    }
 
- public String getQuestion() {
-     return question;
- }
+    public QuestionRequest(String question, String context) {
+        this.question = question;
+        this.context = context;
+    }
 
- public void setQuestion(String question) {
-     this.question = question;
- }
+    public String getQuestion() {
+        return question;
+    }
 
- @Override
- public String toString() {
-     return "QuestionRequest{question='" + question + "'}";
- }
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public String getContext() {
+        return context;
+    }
+
+    public void setContext(String context) {
+        this.context = context;
+    }
+
+    @Override
+    public String toString() {
+        return "QuestionRequest{question='" + question + "', context='" + context + "'}";
+    }
 }
