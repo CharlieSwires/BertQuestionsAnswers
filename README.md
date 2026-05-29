@@ -5,6 +5,8 @@ BERTQuestionAnswering
 <p>download git https://git-scm.com/downloads</p>
 <p>git clone https://github.com/CharlieSwires/BertQuestionsAnswers</p>
 <p>Load python 3.12 interpreter https://www.python.org/downloads</p>
+<p> and C++ https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist</p>
+<p>Using git-bash in administrator mode run the following.</p>
 <p>cd BertQuestionsAnswers/src/main/python</p>
 <p>run ./runthis.sh</p>
 <p>edit test2.pt OUT_DIR = r"C:\Users\charl\eclipse-workspace\bert\BertQuestionsAnswers\src\main\python" to be the correct path</p>

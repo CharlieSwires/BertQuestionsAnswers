@@ -51,7 +51,7 @@ public class BertQuestionAnswering {
         .optEngine("PyTorch")
         .optDevice(Device.cpu())
         .optModelPath(Paths.get(
-                "C:\\Users\\charl\\eclipse-workspace\\BertQuestionsAnswers\\src\\main\\python\\distilbert_qa_traced.pt"))
+                "C:\\Users\\owner\\eclipse-workspace\\BertQuestionsAnswers\\src\\main\\python\\distilbert_qa_traced.pt"))
         .optTranslator(new QaTranslator())
         .build();
 		

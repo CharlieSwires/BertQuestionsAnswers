@@ -9,7 +9,7 @@ from transformers import AutoTokenizer, DistilBertForQuestionAnswering
 MODEL_NAME = "distilbert-base-uncased-distilled-squad"
 SEQ_LEN = 384
 
-OUT_DIR = r"C:\Users\charl\eclipse-workspace\BertQuestionsAnswers\src\main\python"
+OUT_DIR = r"C:\Users\owner\eclipse-workspace\BertQuestionsAnswers\src\main\python"
 
 os.makedirs(OUT_DIR, exist_ok=True)
 
